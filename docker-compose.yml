@@ -8,6 +8,11 @@ services:
 
     volumes:
       - ./src:/var/www/html
+
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     
     depends_on:
       - db
