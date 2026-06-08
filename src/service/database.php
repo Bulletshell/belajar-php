@@ -1,9 +1,9 @@
 <?php
 
 $host = 'db';
-$dbname = 'db_belajar';
-$username = 'user';
-$password = 'Test.123';
+$dbname = $_ENV['MYSQL_DATABASE'];
+$username = $_ENV['MYSQL_USER'];
+$password = $_ENV['MYSQL_PASSWORD'];
 
 try {
     $pdo = new PDO(
