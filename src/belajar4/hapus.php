@@ -1,6 +1,6 @@
 <?php
 
-    require 'functions.php';
+    require './belajar4/functions.php';
 
     $id = $_GET["id"];
 
