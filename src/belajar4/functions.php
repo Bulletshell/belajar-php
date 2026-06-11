@@ -53,4 +53,28 @@ function hapus($id){
     mysqli_query($conn, "DELETE FROM tb_kocheng WHERE id = $id");
     return mysqli_affected_rows($conn);
     }
+
+
+function ubah($data){
+    global $conn;
+    // Ambil data dari tiap elemen dalam form
+        $id = $data["id"];
+        $nama = htmlspecialchars($data["nama"]);
+        $umur = htmlspecialchars($data["umur"]);
+        $jenis_kelamin = htmlspecialchars($data["jenis_kelamin"]);
+        $ras = htmlspecialchars($data["ras"]);
+        $berat = htmlspecialchars($data["berat"]);
+        $gambar = htmlspecialchars($data["gambar"]);
+
+        $query = "UPDATE tb_kocheng SET
+                    nama = '$nama',
+                    umur = $umur,
+                    jenis_kelamin = '$jenis_kelamin',
+                    ras = '$ras',
+                    berat = '$berat',
+                    gambar = '$gambar'
+                    WHERE id = $id";
+    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
 ?>
