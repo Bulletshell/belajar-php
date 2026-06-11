@@ -1,15 +1,15 @@
 <?php
 
 $host = 'db';
-$dbname = $_ENV['MYSQL_DATABASE'];
-$username = $_ENV['MYSQL_USER'];
-$password = $_ENV['MYSQL_PASSWORD'];
+// $dbname = $_ENV['MYSQL_DATABASE'];
+// $username = $_ENV['MYSQL_USER'];
+// $password = $_ENV['MYSQL_PASSWORD'];
 
 try {
     $pdo = new PDO(
-        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
-        $username,
-        $password
+        "mysql:host=$host;dbname=$_ENV[MYSQL_DATABASE];charset=utf8mb4",
+        $_ENV['MYSQL_USER'],
+        $_ENV['MYSQL_PASSWORD']
     );
 
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
