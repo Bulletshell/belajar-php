@@ -3,6 +3,7 @@
     require 'functions.php';
 
     if(isset($_POST['submit'])){
+
         //Validasi input data
         if(tambah($_POST)>0){
            echo "
@@ -31,7 +32,7 @@
 
     <h1>Tambah Data Kocheng</h1>
 
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         <ul>
             <li>
                 <label for="nama">Nama : </label>
@@ -55,7 +56,7 @@
             </li>
             <li>
                 <label for="gambar">Gambar : </label>
-                <input type="text" name="gambar" id="gambar" required>
+                <input type="file" name="gambar" id="gambar">
             </li>
             <li>
                 <button type="submit" name="submit">Tambah Data</button>

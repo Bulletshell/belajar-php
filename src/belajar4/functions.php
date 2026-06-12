@@ -30,7 +30,14 @@ function tambah($data){
         $jenis_kelamin = htmlspecialchars($data["jenis_kelamin"]);
         $ras = htmlspecialchars($data["ras"]);
         $berat = htmlspecialchars($data["berat"]);
-        $gambar = htmlspecialchars($data["gambar"]);
+        // $gambar = htmlspecialchars($data["gambar"]);
+
+        //upload gambar
+        $gambar = upload();
+        
+        if(!$gambar){
+            return false;
+        }
 
     // Handling INT NULL
     if($umur==NULL||$berat==NULL){
@@ -45,6 +52,46 @@ function tambah($data){
         mysqli_query($conn, $query);
 
         return mysqli_affected_rows($conn);
+}
+
+function upload(){
+    $namaFile = $_FILES['gambar']['name'];
+    $ukuranFile = $_FILES['gambar']['size'];
+    $error = $_FILES['gambar']['error'];
+    $tmpName = $_FILES['gambar']['tmp_name'];
+
+    //cek apakah gambar diupload
+    if($error===4){
+        echo "<script>
+            alert('Pilih gambar terlebih dahulu!');
+        </script>";
+        return false;
+    }
+
+    //cek apakah file yang diupload adalah gambar
+    $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+    $ekstensiGambar = explode('.', $namaFile);
+    $ekstensiGambar = strtolower(end($ekstensiGambar));
+    if(!in_array($ekstensiGambar, $ekstensiGambarValid)){
+        echo "<script>
+            alert('Hanya menerima file jpg, jpeg, dan png!');
+        </script>";
+        return false;
+    }
+
+    //cek ukuran file
+    if($ukuranFile>1000000){
+        echo "<script>
+            alert('Ukuran gambar tidak boleh lebih besar dari 1MB');
+        </script>";
+        return false;
+    }
+
+    $namaFileBaru = uniqid() . '.' . $ekstensiGambar;
+
+    //lolos pengecekan, gambar siap diupload
+    move_uploaded_file($tmpName, 'img/' . $namaFileBaru);
+    return $namaFileBaru;
 }
 
 
@@ -64,7 +111,16 @@ function ubah($data){
         $jenis_kelamin = htmlspecialchars($data["jenis_kelamin"]);
         $ras = htmlspecialchars($data["ras"]);
         $berat = htmlspecialchars($data["berat"]);
-        $gambar = htmlspecialchars($data["gambar"]);
+        $gambarLama = $data["gambarLama"];
+
+        
+
+        // Cek jika user mengganti gambar
+        if($_FILES['gambar']['error']===4){
+            $gambar = $gambarLama;
+        }else{
+            $gambar = upload();
+        };
 
         $query = "UPDATE tb_kocheng SET
                     nama = '$nama',
