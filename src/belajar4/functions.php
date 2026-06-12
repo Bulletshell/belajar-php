@@ -77,4 +77,16 @@ function ubah($data){
     mysqli_query($conn, $query);
     return mysqli_affected_rows($conn);
 }
+
+function cari($keyword){
+    $query = "SELECT * FROM tb_kocheng WHERE
+                nama LIKE '%$keyword%' OR
+                umur = '$keyword' OR
+                jenis_kelamin = '$keyword' OR
+                ras LIKE '$keyword' OR
+                berat LIKE '$keyword'
+                ";
+
+    return query($query);
+}
 ?>
