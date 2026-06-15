@@ -1,10 +1,10 @@
 <?php 
-//Ketika menggunakan XAMPP)
+
 if(isset($_ENV['MYSQL_DATABASE'])){
     //Menggunakan docker => hostname = 'db' sesuai container
     $conn = mysqli_connect("db", $_ENV['MYSQL_USER'], $_ENV['MYSQL_PASSWORD'], $_ENV['MYSQL_DATABASE']);
 }else{
-    //Ketika menggunakan XAMPP)
+    //Ketika menggunakan XAMPP
     $conn = mysqli_connect("localhost", "root", "", "db_belajar");
 }
 
@@ -144,5 +144,38 @@ function cari($keyword){
                 ";
 
     return query($query);
+}
+
+function register($data){
+    global $conn;
+
+    $username = strtolower(stripslashes($data["username"]));
+    $password = mysqli_real_escape_string($conn, $data["password"]);
+    $password2 = mysqli_real_escape_string($conn, $data["password2"]);
+
+    //Cek username sudah ada atau belum
+    $result = mysqli_query($conn, "SELECT username FROM tb_user WHERE username='$username'");
+
+    if(mysqli_fetch_assoc($result)){
+        echo "<script>
+                alert('User sudah terdaftar!');
+        </script>";
+        return false;
+    };
+    //Validate password konfirmasi
+    if($password !== $password2){
+        echo "<script>
+                alert('Password konfirmasi tidak sesuai!');
+        </script>";
+        return false;
+        }
+
+    // enkripsi password
+    $password = password_hash($password, PASSWORD_DEFAULT);
+
+    //insert to db
+    mysqli_query($conn, "INSERT INTO tb_user (username, password) VALUES('$username', '$password')");
+
+    return mysqli_affected_rows($conn);
 }
 ?>

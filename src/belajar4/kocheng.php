@@ -1,4 +1,10 @@
 <?php
+    session_start();
+    
+    if(!isset($_SESSION["login"])){
+        header("Location: login.php");
+        exit;
+    }
 
     require 'functions.php';
     $tb_kocheng = query("SELECT * FROM tb_kocheng");
@@ -16,7 +22,11 @@
     <title>Halaman Admin</title>
 </head>
 <body>
+    <form action="logout.php" method="post">
+        <button>Logout</button>
+    </form>
     
+
     <h1>Daftar Kocheng</h1>
 
     <a href="tambah.php">Tambah Data Kocheng</a>
