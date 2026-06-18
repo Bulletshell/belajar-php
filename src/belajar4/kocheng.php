@@ -1,4 +1,6 @@
 <?php
+
+/** @var mysqli $conn */
     session_start();
     
     if(!isset($_SESSION["login"])){
@@ -7,7 +9,19 @@
     }
 
     require 'functions.php';
-    $tb_kocheng = query("SELECT * FROM tb_kocheng");
+
+
+    // Pagination
+    // konfigurasi pagination
+    $jumlahDataPerHalaman = 5;
+    $jumlahData = count(query("SELECT * FROM tb_kocheng"));
+    $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
+
+    //Kondisi jika pada homepage tidak terdapat ?page= maka akan diset page=1
+    $halamanAktif = (isset($_GET["page"])) ? $_GET["page"] : 1;
+    $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
+
+    $tb_kocheng = query("SELECT * FROM tb_kocheng LIMIT $awalData, $jumlahDataPerHalaman");
 
     if(isset($_POST['cari'])){
         $tb_kocheng = cari($_POST["keyword"]);
@@ -35,7 +49,26 @@
         <input type="text" name="keyword" size="35" autofocus placeholder="Masukkan keyword pencarian" autocomplete="off">
         <button type="submit" name="cari">Cari</button>
     </form>
-    <br></br>
+    <br>
+
+    <!-- Navigasi (pagination) -->
+    <?php if($halamanAktif>1): ?>
+    <a href="?page=<?= $halamanAktif-1; ?>">&laquo;</a>
+    <?php endif; ?>
+
+    <?php for($i=1;$i<=$jumlahHalaman; $i++): ?>
+            <?php if($i == $halamanAktif) :?>
+                <a href="?page=<?= $i; ?>" style="font-weight: bold;"><?= $i ?></a>
+            <?php else : ?>
+                <a href="?page=<?= $i; ?>"><?= $i ?></a>
+            <?php endif; ?>
+        <?php endfor; ?>
+
+    <?php if($halamanAktif<$jumlahHalaman): ?>
+    <a href="?page=<?= $halamanAktif+1; ?>">&raquo;</a>
+    <?php endif; ?>
+
+    <br>
     <table border="1" cellpadding="10" cellspacing="0">
 
         <tr>

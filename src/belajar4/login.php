@@ -15,7 +15,7 @@
         $key = $_COOKIE["key"];
 
         //ambil username berdasarkan id
-        $result = mysqli_query($conn, "SELECT username FROM tb_user WHERE id=id");
+        $result = mysqli_query($conn, "SELECT username FROM tb_user WHERE id=$id");
         $row = mysqli_fetch_assoc($result);
 
         //cek cookie & username match
