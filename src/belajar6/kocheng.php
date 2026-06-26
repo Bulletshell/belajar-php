@@ -30,20 +30,26 @@
             left: 320px;
             display: none;
         }
+
+        @media print{
+            .logout, .tambah, .cari, .aksi {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <form action="logout.php" method="post">
+    <form action="logout.php" method="post" class="logout">
         <button>Logout</button>
     </form>
     
 
     <h1>Daftar Kocheng</h1>
 
-    <a href="tambah.php">Tambah Data Kocheng</a>
+    <a href="tambah.php" class="tambah">Tambah Data Kocheng</a>
     <br><br>
 
-    <form action="" method="post">
+    <form action="" method="post" class="cari">
         <input type="text" name="keyword" size="35" autofocus placeholder="Masukkan keyword pencarian" autocomplete="off" id="keyword">
         <button type="submit" name="cari" id="tombolCari">Cari</button>
         <img src="img/load.gif" class="loader">
@@ -54,7 +60,7 @@
 
         <tr>
             <th>No.</th>
-            <th>Aksi</th>
+            <th class="aksi">Aksi</th>
             <th>Gambar</th>
             <th>Nama</th>
             <th>Umur</th>
@@ -68,7 +74,7 @@
 
         <tr align="center">
             <td><?= $i; ?></td>
-            <td>
+            <td class="aksi">
                 <a href="ubah.php?id=<?= $row["id"]; ?>">Ubah</a> |
                 <a href="hapus.php?id=<?= $row["id"]; ?>" onclick="return confirm('Yakin ingin menghapus kocheng ini??')">Hapus</a>
             </td>
